@@ -4,10 +4,15 @@ mod error;
 mod config;
 mod logger;
 mod db;
+mod models;
+mod repositories;
 
 use crate::config::Config;
 use crate::error::Result;
 use crate::db::{mongodb::MongoDBConnection, postgres::PostgresConnection};
+use crate::models::message::Message;
+
+use models::message;
 use tracing::{info, error};
 
 
@@ -27,6 +32,11 @@ async fn main() -> Result<()>{
     info!("Connecting to PostgreSQL...");
     let postgres_db = PostgresConnection::new(&config.postgres).await?;
     info!("PostgreSQL connected");
+
+    let message_repository = repositories::message_repository::MessageRepository::new(mongo_db.database);
+    let campaign_repository = repositories::campaign_repository::CampaignRepository::new(postgres_db.client);
+
+
 
     Ok(())
 }
