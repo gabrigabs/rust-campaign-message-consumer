@@ -21,4 +21,10 @@ pub enum Error {
     
     #[error("Connection error: {0}")]
     Connection(String),
+
+    #[error("MongoDB error: {0}")]
+    MongoDB(#[from] mongodb::error::Error),
+
+    #[error("PostgreSQL error: {0}")]
+    Postgres(#[from] tokio_postgres::Error),
 }
