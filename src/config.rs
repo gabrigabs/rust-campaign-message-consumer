@@ -1,4 +1,4 @@
-use crate::error::{Error, Result};
+use crate::error::Result;
 use dotenv::dotenv;
 use std::env;
 
@@ -29,7 +29,6 @@ pub struct PostgresConfig {
     pub database: String,
     pub user: String,
     pub password: String,
-    pub ssl: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -56,7 +55,6 @@ impl Config {
                 database: env::var("POSTGRES_DB").unwrap_or_else(|_| "campaigns".to_string()),
                 user: env::var("POSTGRES_USER").unwrap_or_else(|_| "postgres".to_string()),
                 password: env::var("POSTGRES_PASSWORD").unwrap_or_else(|_| "postgres".to_string()),
-                ssl: env::var("POSTGRES_SSL").unwrap_or_else(|_| "false".to_string()) == "true",
             },
             app: AppConfig {
                 log_level: env::var("LOG_LEVEL").unwrap_or_else(|_| "info".to_string()),

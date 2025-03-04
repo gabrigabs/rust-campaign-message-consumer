@@ -13,7 +13,7 @@ use crate::error::Result;
 use crate::db::{mongodb::MongoDBConnection, postgres::PostgresConnection};
 use crate::rabbitmq::consumer::RabbitMQConsumer;
 
-use tracing::{info, error};
+use tracing::info;
 
 
 #[tokio::main]
