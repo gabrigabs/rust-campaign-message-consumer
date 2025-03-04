@@ -6,3 +6,7 @@ authors = ["gabrigabs"]
 description = "A RabbitMQ consumer for campaign messages"
 
 [dependencies]
+dotenv = "0.15.0"
+thiserror = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
