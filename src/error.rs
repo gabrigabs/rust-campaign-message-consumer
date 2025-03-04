@@ -27,4 +27,7 @@ pub enum Error {
 
     #[error("PostgreSQL error: {0}")]
     Postgres(#[from] tokio_postgres::Error),
+
+    #[error("RabbitMQ error: {0}")]
+    RabbitMQ(#[from] lapin::Error),
 }

@@ -6,13 +6,13 @@ mod logger;
 mod db;
 mod models;
 mod repositories;
+mod rabbitmq;
 
 use crate::config::Config;
 use crate::error::Result;
 use crate::db::{mongodb::MongoDBConnection, postgres::PostgresConnection};
-use crate::models::message::Message;
+use crate::rabbitmq::consumer::RabbitMQConsumer;
 
-use models::message;
 use tracing::{info, error};
 
 
@@ -35,6 +35,17 @@ async fn main() -> Result<()>{
 
     let message_repository = repositories::message_repository::MessageRepository::new(mongo_db.database);
     let campaign_repository = repositories::campaign_repository::CampaignRepository::new(postgres_db.client);
+
+    info!("Connecting to RabbitMQ at {}", config.rabbitmq.url);
+
+    let consumer = RabbitMQConsumer::new(
+        &config.rabbitmq.url,
+        message_repository,
+        campaign_repository,
+    ).await?;
+
+    info!("Starting to consume messages from queue: {}", config.rabbitmq.queue);
+    consumer.consume_messages(&config.rabbitmq.queue).await?;
 
 
 

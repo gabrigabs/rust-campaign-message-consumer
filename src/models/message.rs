@@ -17,7 +17,7 @@ pub struct Message {
     pub updated_at: Option<DateTime<Utc>>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct MessagePayload {
     pub phone_number: String,
     pub message: String,
