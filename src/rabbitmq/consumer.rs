@@ -54,8 +54,6 @@ impl RabbitMQConsumer {
         ).await?;
 
         info!("Started consuming from queue: {}", queue_name);
-
-        let mut campaign_id = None;
         
         while let Some(delivery) = consumer.next().await {
             match delivery {
@@ -69,10 +67,6 @@ impl RabbitMQConsumer {
                                 company_id = %payload.company_id,
                                 "Received message"
                             );
-                            
-  
-                            campaign_id = Some(payload.campaign_id.clone());
-                            
 
                             if let Err(e) = self.process_message(payload).await {
                                 error!("Failed to process message: {}", e);

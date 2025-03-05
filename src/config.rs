@@ -42,7 +42,7 @@ impl Config {
         
         Ok(Config {
             mongodb: MongoDBConfig {
-                uri: env::var("MONGODB_URI").unwrap_or_else(|_| "mongodb://localhost:27017/campaigns".to_string()),
+                uri: env::var("MONGODB_URI").unwrap_or_else(|_| "mongodb://root:root@localhost:27017/messages?authSource=admin".to_string()),
                 db_name: env::var("MONGODB_DB_NAME").unwrap_or_else(|_| "campaigns".to_string()),
             },
             rabbitmq: RabbitMQConfig {
