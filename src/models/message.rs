@@ -23,6 +23,7 @@ pub struct MessagePayload {
     pub message: String,
     pub campaign_id: String,
     pub company_id: String,
+    pub is_last_message: bool,
 }
 
 impl Message {

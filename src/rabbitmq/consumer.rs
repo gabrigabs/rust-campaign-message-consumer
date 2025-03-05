@@ -90,26 +90,24 @@ impl RabbitMQConsumer {
                     error!("Error receiving message: {}", e);
                 }
             }
-            // TODO: Update campaign status to SENT after processing all messages, not every message
-            
-            if let Some(ref id) = campaign_id {
-                info!("Updating status for campaign: {}", id);
-                if let Err(e) = self.campaign_repository.update_campaign_status(&id, "SENT").await {
-                    error!("Failed to update campaign status: {}", e);
-                } else {
-                    info!("Campaign {} marked as SENT after processing all messages", id);
-                }
-            }
         }
 
         Ok(())
     }
 
     async fn process_message(&self, payload: MessagePayload) -> Result<()> {
+        let campaign_id = payload.campaign_id.clone();
+        let is_last_message = payload.is_last_message;
+        
         let message = Message::from_payload(payload);
 
         let message_id = self.message_repository.save_message(message).await?;
         info!("Saved message with ID: {}", message_id);
+ 
+        if is_last_message {
+            self.campaign_repository.update_campaign_status(&campaign_id, "SENT").await?;
+            info!("Campaign {} marked as SENT after processing all messages", campaign_id);
+        }
 
 
         Ok(())
