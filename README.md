@@ -23,9 +23,11 @@ cargo build
 
 Você deve configurar as variáveis de ambiente com os mesmos valores usados na [API de Gerenciamento de Campanhas](https://github.com/gabrigabs/api-campaign-management) Copie o arquivo `.env.example` para `.env` e ajuste conforme necessário:
 
+> ⚠️ **AVISO:** Sempre insira no final da sua url mongodb a query ?authSource=admin sem ela a aplicação não irá conseguir interagir com o mongodb
+
 ```bash
 # MongoDB
-MONGODB_URI=mongodb://root:root@localhost:27017/messages
+MONGODB_URI=mongodb://root:root@localhost:27017/messages?authSource=admin
 MONGODB_DB_NAME=messages
 
 # RabbitMQ
